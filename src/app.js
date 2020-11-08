@@ -19,6 +19,7 @@ app.use(express.static('./public'));
 app.listen(port, () => console.log(`Server started on port ${port}`));
 app.get('/', (req,res) => {
     res.render('index');
+    // res.sendFile(__dirname + '/views/index.html');
 });
 
 // Static folder
@@ -27,6 +28,7 @@ app.get('/', (req,res) => {
 /** Routes */
 // upload file
 app.use(upload());
+app.post('/index.ejs', (rerq,res) => res.render('index'));
 app.post('/upload', (req,res) => {
     try {
         if (!req.files) throw 'No file selected!';
@@ -49,10 +51,11 @@ app.post('/upload', (req,res) => {
                     res.render('index', {
                         msg: 'File uploaded!'
                     });
+                    // res.sendFile(__dirname + '/views/index.html');
                 }
             })
         } else {
-            throw 'Only (.txt) files are allowed!'
+            throw 'Only (.txt) files are allowed!';
         }
     } catch (e) {
         console.log(e);
