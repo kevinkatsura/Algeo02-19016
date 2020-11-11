@@ -1,0 +1,72 @@
+* {
+  padding: 0;
+  margin: 0;
+  /* border: 0.25px solid red; */
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+#main-section {
+  display: flex;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("./resources/freestocks-YTUZcmmf1eU-unsplash.jpg");
+  background-size: cover;
+  height: 400px;
+  justify-content: center;
+  flex-direction: column;
+}
+.text-title {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+#main-search {
+  display: block;
+  width: 100%;
+}
+#main-search {
+  width: 100%;
+}
+#main-search input {
+  width: 80%;
+}
+#main-search button[type="submit"] {
+  width: 10%;
+}
+.upload-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 20%;
+}
+label {
+  width: 120px;
+  padding: 8px 4px;
+  display: flex;
+  text-align: center;
+  border-radius: 8px;
+  height: 130px;
+}
+
+label i {
+  margin: 10px 0;
+}
+#file-submit {
+  display: block;
+  width: 120px;
+  padding: 8px 4px;
+  border-radius: 8px;
+  border-style: none;
+}
+.second-section {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
