@@ -2,11 +2,11 @@ const express = require('express');
 const path = require('path');
 const upload = require('express-fileupload');
 const util = require('util');
-// const ejs = require('ejs');
-
+const fs = require('fs');
+var sastrawi = require('sastrawijs');
 const { throws } = require('assert');
-
-
+const request = require('request');
+const cheerio = require('cheerio');
 
 // Initialize app
 const app = express();
@@ -70,4 +70,80 @@ app.post('/upload', (req,res) => {
 
     }
     return message;
+});
+
+app.get('/AboutUs', (req,res) => {
+    res.sendFile(__dirname + '/views/aboutus.html');
+});
+
+
+app.post('/search?', (req,res) => {
+    const searchQueryArray = req;
+    // console.log(searchQueryArray);
+    const upload_path = "./public/uploads";
+    const files = fs.readdirSync(upload_path);
+    console.log(files);
+
+    var fileObjectContainer = [];
+    
+    // local files
+    files.forEach(file => {
+        var stemmer = new sastrawi.Stemmer();
+        var tokenizer = new sastrawi.Tokenizer();
+        var senteces = fs.readFileSync(`${upload_path}/${file}`, {encoding:'utf8'});
+        const sentenceArr = senteces.split(".");
+        const firstSentence = sentenceArr[0];
+        // let wordsInFile = tokenizer.tokenize(senteces);
+        let stemmed = []
+        // wordsInFile.forEach( word => stemmed.push(stemmer.stem(word))); 
+        let kalimatArr = tokenizer.tokenize(senteces);
+        const wordsCount = kalimatArr.length;
+        kalimatArr.forEach(element => {
+            stemmed.push(stemmer.stem(element));
+        });
+        // console.log(stemmed);
+        var fileObject = {
+            filename : file,
+            arrayKata : stemmed,
+            banyakKata : wordsCount,
+            firstSentence : firstSentence,
+            similarity: 0
+        } 
+        fileObjectContainer.push(fileObject);
+    });
+
+    // web scrapping
+    request('https://www.alodokter.com/virus-corona', async (err, response, html) => {
+        if(!err && res.statusCode == 200) {
+            var stemmer = new sastrawi.Stemmer();
+            var tokenizer = new sastrawi.Tokenizer();
+
+            const $ = cheerio.load(html);
+            const dataScrap = await $('.post-content').text();
+            const sentenceArr = dataScrap.split(".");
+            const firstSentence = sentenceArr[0];
+
+            let stemmed = [];
+            let kalimatArr = tokenizer.tokenize(dataScrap);
+            const wordsCount = kalimatArr.length;
+            kalimatArr.forEach(element => {
+                stemmed.push(stemmer.stem(element));
+            });    
+            // console.log(stemmed);
+            var fileObjectScrap = {
+                filename : 'virus corona',
+                arrayKata : stemmed,
+                banyakKata : wordsCount,
+                firstSentence : firstSentence,
+                similarity: 0
+            }
+            console.log(fileObjectScrap);
+            fileObjectContainer.push(fileObjectScrap);
+            
+            console.log(fileObjectContainer.length);
+            res.json({fileObjectContainer});
+        }
+    });
+    
+
 });

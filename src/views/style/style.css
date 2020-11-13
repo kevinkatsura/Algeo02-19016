@@ -26,16 +26,9 @@ body {
 #main-search {
   display: block;
   width: 100%;
+  margin: 4px 6px;
 }
-#main-search {
-  width: 100%;
-}
-#main-search input {
-  width: 80%;
-}
-#main-search button[type="submit"] {
-  width: 10%;
-}
+
 .upload-section {
   display: flex;
   align-items: center;
@@ -50,12 +43,15 @@ label {
   display: flex;
   text-align: center;
   border-radius: 8px;
-  height: 130px;
+  min-height: 130px;
+  flex-direction: column;
 }
 
 label i {
   margin: 10px 0;
+  display: block;
 }
+
 #file-submit {
   display: block;
   width: 120px;
@@ -69,4 +65,20 @@ label i {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+}
+
+.result {
+  min-height: 400px;
+}
+
+#result-header {
+  padding: 20px 0 0 0;
+}
+
+#story-section {
+  min-height: 600px;
+}
+
+#selected-file-span {
+  margin: 6px auto;
 }

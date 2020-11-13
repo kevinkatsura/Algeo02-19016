@@ -17,33 +17,38 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link active text-info" href="/"> Home <span class="sr-only">(current)</span></a>
-          <a class="nav-link text-info" href="#">Browse</a>
-          <a href="#" class="nav-link text-info">About Us</a>
+          <a class="nav-link active text-info font-weight-bold" href="/"> Home <span class="sr-only">(current)</span></a>
+          <a href="/AboutUs" class="nav-link text-info">About Us</a>
         </div>
       </div>
     </nav>
 
     <div class="container-fluid" id="main-section">
-        <h1 class="text-title text-light">Documents Search Engine</h1>
-        <!-- Search Bar -->
-        <div class="container-fluid form-group  my-2 mx-8 text-center container">
-          <form class="form-inline my-2 my-lg-0" id="main-search">
-            <input class="form-control mr-sm-2 rounded-pill" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0 rounded-pill" type="submit"><i class="fas fa-search"></i></button>
+      <h1 class="text-title text-light">Documents Search Engine</h1>
+      <!-- Search Bar -->
+      <div class="form-group  my-2 mx-8 text-center container">
+        <div class="row">
+          <form class="form-inline my-2" id="main-search">
+            <input class="form-control mr-sm-2  rounded-pill col-sm-11" type="search" placeholder="Search" aria-label="Search" id="main-search-bar">
+            <button class="btn btn-outline-info my-2 my-sm-0 rounded-pill col-sm-1" type="button" id="main-search-button"><i class="fas fa-search"></i></button>
           </form>
         </div>
-
-      <!-- Upload file section -->
+      </div>
     </div>
+
+    <!-- Result section -->
+    <div class="container-fluid text-light bg-dark" id="result-header"></div>
+
+
+    <!-- Upload file section -->
     <div class="second-section bg-dark text-light">
       <h6>or</h6>
       <h3>Upload Documents</h3>
       <div class="container-fluid">
           <form action="/upload" method="POST" enctype="multipart/form-data">
               <div class="upload-section">
-                  <label for="fileHandler" class="bg-info text-light"><i class="fas fa-file-upload fa-4x"></i><p id="">Choose a file</p></label>
-                  <span class='span-hidden'></span>
+                  <label for="fileHandler" class="bg-info text-light"><i class="fas fa-file-upload fa-4x"></i><p id="custom-message">Choose a file</p></label>
+                  <span id="selected-file-span"></span>
                   <input class='form-control-file' type="file" name="fileHandler" hidden id="fileHandler">
                   <input type="submit" value="Upload" id="file-submit" class="bg-info text-light"></div></form>
               </div>
