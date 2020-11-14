@@ -7,23 +7,21 @@ var sastrawi = require('sastrawijs');
 const { throws } = require('assert');
 const request = require('request');
 const cheerio = require('cheerio');
+const { serialize } = require('v8');
 
 // Initialize app
 const app = express();
 const port = 5000;
 // app.set('view engine', 'ejs');
 
-// Public folder
+// Static folder
 app.use(express.static('./views'));
-
+app.use(express.json());
 app.listen(port, () => console.log(`Server started on port ${port}`));
 app.get('/', (req,res) => {
     // res.render('index');
     res.sendFile(__dirname + '/views/index.html');
 });
-
-// Static folder
-
 
 /** Routes */
 // upload file
@@ -42,7 +40,7 @@ app.post('/upload', (req,res) => {
         // const mimetype = allowedextentions.test(fileObj.mimetype);
     
         if (extname) {
-            fileObj.mv(`./public/uploads/${fileName}`, (err) => {
+            fileObj.mv(`../test/${fileName}`, (err) => {
                 if (err) {
                     console.log(err);
                     res.status(500);
@@ -78,11 +76,11 @@ app.get('/AboutUs', (req,res) => {
 
 
 app.post('/search?', (req,res) => {
-    const searchQueryArray = req;
+    const searchQueryArray = req.body;
     // console.log(searchQueryArray);
-    const upload_path = "./public/uploads";
+    const upload_path = "../test";
     const files = fs.readdirSync(upload_path);
-    console.log(files);
+    // console.log(files);
 
     var fileObjectContainer = [];
     
@@ -137,13 +135,28 @@ app.post('/search?', (req,res) => {
                 firstSentence : firstSentence,
                 similarity: 0
             }
-            console.log(fileObjectScrap);
+            // console.log(fileObjectScrap);
             fileObjectContainer.push(fileObjectScrap);
             
-            console.log(fileObjectContainer.length);
-            res.json({fileObjectContainer});
+            
+            const searchQueryStemmed = []
+            var stemmer = new sastrawi.Stemmer();
+            searchQueryArray.searchInput.forEach(kataQuery => {
+                searchQueryStemmed.push(stemmer.stem(kataQuery));
+            });
+            var fileObjectContainerObject = {fileObjectContainer};
+            fileObjectContainerObject.searchInputStemmed = searchQueryStemmed;
+            // console.log(fileObjectContainerObject);
+            res.json(fileObjectContainerObject);
         }
     });
-    
-
 });
+
+app.get('/open/:query', (req,res) => {
+    const requestParam = req.params.query;
+    if (requestParam === 'virus corona') {
+        res.redirect('https://www.alodokter.com/virus-corona');
+    } else {
+        res.sendFile(path.join(__dirname, '../test/', requestParam));
+    }
+})

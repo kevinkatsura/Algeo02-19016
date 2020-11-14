@@ -31,17 +31,18 @@ fileInput.addEventListener("change", loaderSelected);
 // Main search listener //
 const mainSearchButton = document.getElementById('main-search-button');
 mainSearchButton.addEventListener('click', async (e) => {
-    const searchInput = document.getElementById("main-search-bar").value.split(/\s/);
+    var searchInput = document.getElementById("main-search-bar").value.split(/\s/);
+    // console.log(searchInput);
     const response = await fetch(`./search?`, { 
         method:'POST', 
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({searchInput})
+        body: JSON.stringify({searchInput: searchInput})
     });
     const responseJSON = await response.json();
     const fileObjectContainer = responseJSON.fileObjectContainer;
-
+    searchInput = responseJSON.searchInputStemmed;
     // show result header
     showResultHeader();
 
@@ -154,7 +155,7 @@ function printResult(fileObjectContainer) {
         resultItemSpan.innerHTML += 
         `<div class="card col-md-12 col-sm-12 col-lg-12" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">${resultItem.filename}</h5>
+                <a href="/open/${resultItem.filename}"><h5 class="card-title">${resultItem.filename}</h5></a>
                 <p class="card-text">Words count: ${resultItem.banyakKata}</p>
                 <p class="card-text">Similarity: ${resultItem.similarity*100}%</p>
                 <p class="card-text">First sentence: ${resultItem.firstSentence}</p>
