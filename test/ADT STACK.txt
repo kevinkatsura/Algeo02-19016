@@ -1,0 +1,175 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+KAMUS UMUM
+constant Nil: integer = -1 { Nil = stack dengan elemen kosong }
+constant MaxEl: integer = 10 { Banyaknya elemen maksimum }
+type infotype: integer { elemen stack }
+type address: integer { indeks tabel }
+{ Versi I: dengan menyimpan tabel dan alamat top secara eksplisit }
+type Stack: ⟨ T: array [0..MaxEl-1] of infotype, { tabel penyimpan elemen stack }
+				TOP: address { alamat TOP: elemen puncak }
+				⟩
+{ Deklarasi: S: Stack
+Definisi akses (diimplementasikan sebagai selektor):
+TOP(S) adalah S.TOP
+InfoTOP(S) adalah S.T[S.TOP] }
+
+
+procedure Push(input/output S: Stack, input X: infotype)
+{ Menambahkan X sebagai elemen Stack S.
+I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh
+F.S. X menjadi TOP yang baru,TOP bertambah 1 }
+Kamus Lokal
+Algoritma
+TOP(S) ← TOP(S) + 1
+InfoTOP(S) ← X
+
+procedure Push(input/output S: Stack, input X: infotype)
+{ Menambahkan X sebagai elemen Stack S.
+I.S. S mungkin kosong, tabel penampung elemen stack TIDAK penuh
+F.S. X menjadi TOP yang baru,TOP bertambah 1 }
+Kamus Lokal
+Algoritma
+TOP(S) ← TOP(S) + 1
+InfoTOP(S) ← X
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Dengan menggunakan ADT Stack yang direpresentasikan sebagai array statik eksplisit seperti yang dibahas di materi kuliah, realisasikan prosedur dan fungsi berikut ini: 
+
+procedure CopyStack(input Sin: Stack, output Sout: Stack)
+{ Membuat salinan Sin }
+{ I.S. Sin terdefinisi, Sout sembarang }
+{ F.S. Sout berisi salinan Sin yang identik }
+
+KAMUS LOKAL
+
+ALGORITMA
+	Sout.TOP <- Sin.TOP
+	i traversal [0 .. TOP]
+		Sout.T[i] <- Sin.T[i]
+
+procedure InverseStack(input/output S: Stack)
+{ Membalik isi suatu stack }
+{ I.S. S terdefinisi }
+{ F.S. Isi S terbalik dari posisi semula }
+
+KAMUS LOKAL
+
+ALGORITMA
+	Stemp : Stack
+	i traversal [0..S.TOP]
+		Stemp.T[S.TOP-i] <- S.T[i]
+	j traversal [0 .. S.TOP]
+		S.T[i] <- Stemp.T[i]
+
+function MergeStack(S1,S2: Stack) → Stack
+{ Menghasilkan sebuah stack yang merupakan hasil penggabungan S1
+dengan S2 dengan S1 berada di posisi lebih “bawah”. Urutan kedua
+stack harus sama seperti aslinya. }
+{ Stack baru diisi sampai seluruh elemen S1 dan S2 masuk ke dalam
+stack, atau jika stack baru sudah penuh, maka elemen yang
+dimasukkan adalah secukupnya yang dapat ditampung. }
+
+KAMUS LOKAL
+
+ALGORITMA
+	S3 : Stack
+	if (S1.TOP+S2.TOP+2 > MaxEl) then
+		i traversal [0..S1.TOP]
+			S3.T[i] <- S1.T[i]
+		i <- 0 
+		j traversal [S1.TOP+1 .. MaxEl-1]
+			S3.T[j] <- S2.T[i]
+			i <- i+1
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Dengan memanfaatkan mesin kata (versi 1), modifikasi dan lengkapi program Evaluasi Ekspresi
+Aritmatika pada slide materi kuliah.
+› Pita karakter berisi ekspresi aritmatika dengan masing-masing “kata” dipisahkan oleh satu atau
+lebih BLANK.
+› Kata yang merupakan operan merepresentasikan sebuah bilangan, contoh: “123”
+merepresentasikan bilangan 123
+› Contoh isi pita: 123 3 *
+› Dengan demikian, harus dibuat ADT Stack of Kata. Gunakan ADT Stack dengan representasi array
+statik-eksplisit.
+› Harus dibuat pula fungsi yang mengubah suatu Kata yang merepresentasikan operan menjadi
+angka/integer. Diasumsikan hanya ada integer positif atau 0.
+
+
+
+
+Program EKSPRESI
+{ Menghitung sebuah ekspresi aritmatika yang ditulis secara postfix }
+USE STACK { paket stack sudah terdefinisi dgn elemennya token }
+KAMUS
+  type token: ... { terdefinisi }
+  S: STACK { stack of token }
+  CT, Op1, Op2: token { token: operan ∪ operator }
+
+
+procedure FirstToken
+{ Mengirim token yang pertama }
+ALGORITMA
+	START
+
+procedure NextToken
+{ Mengirim token yang berikutnya }
+ALGORITMA
+	ADV
+
+function EndToken → boolean
+{ Menghasilkan true jika proses akuisisi mendapat hasil sebuah
+token kosong. Merupakan akhir ekspresi }
+
+
+function IsOperator(CT: token) → boolean
+{ Menghasilkan true jika CT adalah operator }
+
+
+function Hitung(OP1,OP2,Operator: token) → token
+{ Menghitung ekspresi, mengkonversi hasil menjadi token}
+	Algoritma
+	FirstToken
+	if (EndToken) then
+		output ("Ekspresi kosong")
+	else
+		repeat
+			depend on (CT) { CT adalah Current Token }
+				not IsOperator(CT):
+					Push(S,CT)
+				IsOperator(CT): { berarti operator }
+					Pop(S,Op2)
+					Pop(S,Op1)
+					Push(S,Hitung(Op1,Op2,CT))
+			NextToken(CT)
+		until (EndToken)
+		output (InfoTop(S)) { Menuliskan hasil }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
