@@ -13,7 +13,7 @@
 Proyek search engine web ini dibuat untuk memenuhi tugas mata kuliah IF2123 Aljabar Linier dan Geometri dengan memanfaatkan cosine similarity yang dipelajari dalam materi aplikasi vektor
 
 ## Screenshots
-
+![screenshot](./src/screenshot.PNG)
 
 ## Setup
 #### Prerequisites
